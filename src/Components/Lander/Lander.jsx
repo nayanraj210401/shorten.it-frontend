@@ -44,25 +44,32 @@ export const Lander = () => {
         `
         const [shortyLink , setShortyLink] = useState("shortLink"); 
         const [createLink] = useMutation(CREATE_SHORTENED_LINK);
-        const {loading,error, data} = useQuery(GET_ALL_URLS);
-        
+        const {loading,error, data, refetch} = useQuery(GET_ALL_URLS);
+        const [isLoading , setIsLoading] = useState(false)
         const [copySuccess , setCopySuccess] = useState('');
      
-        let myCreatedLink = "http://127.0.0.1:8000/";
+        let myCreatedLink = "https://storten-it-backend.herokuapp.com/";
         const onSubmit = (e) =>{
                 e.preventDefault();
                 link =  e.target[0].value;
+                setIsLoading(true);
+                try{
                 console.log("Link :"+link);
                 if(!isAlreadyLinkExist(link)){
                   return ;
                 }
-        convertLink(link);
+                convertLink(link);
+                setTimeout( () => setIsLoading(false), 1000);
+                }catch(e){
+                  alert("Couldn't create the Short Link something went wrong, Please try later");
+            }
         }
-        
 
         const isAlreadyLinkExist = (link) => {
           console.log("data:",data);
+          if(error) throw new Error("Problem with Backend")
           let myResult = data.urls.filter( d => d.fullUrl == link);
+          console.log("My Result",myResult)
           if(myResult != 0){
                 myCreatedLink += myResult[0]["urlHash"];
                 setShortyLink(myCreatedLink);
@@ -73,6 +80,7 @@ export const Lander = () => {
 
         const convertLink = async (link) => {
                 //do GraphQL operation
+                try{
                 await createLink({
                         variables :{
                                 fullUrl: link,
@@ -81,10 +89,19 @@ export const Lander = () => {
                         myCreatedLink += res.data.createUrl.url["urlHash"]
                 });
                setShortyLink(myCreatedLink);
+                }catch(e){
+                        refetch();
+                        if(!alert("Please reload page and try again")){
+                                window.location.reload();
+                        }
+                }
         }       
 
         const copyToClipBoard = () => {
-                if(!validateText()) return ;
+                if(!validateText()){
+                        alert("There is ntg to copy, make sure to click on shorten Button provided") 
+                        return;
+                }
                 navigator.clipboard.writeText(shortyLink)
                 setCopySuccess('Copied to ClipBoard');
         }
@@ -119,7 +136,7 @@ export const Lander = () => {
                                         <label>Original URL</label>
                                 </div>
                                 <button type = "submit">
-                                        Shorten&nbsp;&nbsp;
+                                        {(isLoading) ? 'loading' : 'Shorten' }&nbsp;&nbsp;
                                         <FontAwesomeIcon icon = {faChevronDown} size = "1x"/>
                                 </button>
                                 <div className = "inp-group" id = "short">

@@ -13,7 +13,7 @@ export const NavBar = () => {
             </div>
             <div className = "social-container">
             <div className="link">
-                    <a href="#">
+                    <a href="https://github.com/nayanraj210401/shorten.it-frontend">
                         <FontAwesomeIcon icon = {faGithub} />
                     </a>
                 </div>
