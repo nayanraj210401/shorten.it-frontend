@@ -10,7 +10,7 @@ const client = new ApolloClient({
   uri: `${process.env.REACT_APP_BACKEND_URL}/graphql/`,
   cache : new InMemoryCache()
 });
- ̰S
+
 
 ReactDOM.render(
   <React.StrictMode>
