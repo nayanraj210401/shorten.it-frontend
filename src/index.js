@@ -7,10 +7,10 @@ import { ApolloProvider } from '@apollo/client/react';
 import {ApolloClient , InMemoryCache} from '@apollo/client'
 
 const client = new ApolloClient({
-  uri: 'https://storten-it-backend.herokuapp.com/graphql/',
+  uri: `${process.env.REACT_APP_BACKEND_URL}/graphql/`,
   cache : new InMemoryCache()
 });
-
+ ̰S
 
 ReactDOM.render(
   <React.StrictMode>

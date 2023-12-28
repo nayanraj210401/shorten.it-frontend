@@ -5,6 +5,7 @@ import { faChevronDown,faClone} from '@fortawesome/fontawesome-free-solid'
 import 'font-awesome/css/font-awesome.min.css';
 import { gql , useMutation } from '@apollo/client';
 import { useQuery } from '@apollo/client';
+import './styles.css';
 export const Lander = () => {
         let link;
 
@@ -48,7 +49,7 @@ export const Lander = () => {
         const [isLoading , setIsLoading] = useState(false)
         const [copySuccess , setCopySuccess] = useState('');
      
-        let myCreatedLink = "https://storten-it-backend.herokuapp.com/";
+        let myCreatedLink = `${process.env.REACT_APP_BACKEND_URL}/`;
         const onSubmit = (e) =>{
                 e.preventDefault();
                 link =  e.target[0].value;
@@ -95,7 +96,7 @@ export const Lander = () => {
                                 window.location.reload();
                         }
                 }
-        }       
+        }
 
         const copyToClipBoard = () => {
                 if(!validateText()){
