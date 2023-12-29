@@ -45,7 +45,7 @@
 ~~~
 
 
-# Backend (hosted on heruko)
+# Backend (hosted on Vercel)
 - The Backend is Basically a Django backend
 
 ## To run the backend 
